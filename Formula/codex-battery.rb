@@ -1,8 +1,8 @@
 class CodexBattery < Formula
   desc "Tiny macOS menu bar battery for Codex quota"
   homepage "https://github.com/EOShoow/codex-battery"
-  url "https://github.com/EOShoow/codex-battery/archive/refs/tags/v0.1.5.tar.gz"
-  sha256 "9445819d7ea4bc14015e404c79986107c35032fe8fe83ba9afc151454b8aa52c"
+  url "https://github.com/EOShoow/codex-battery/archive/refs/tags/v0.1.6.tar.gz"
+  sha256 "9685939c8af82856b2b57aa21c3a165614e9f0fbbac40692d0d13f8207365d70"
   license "MIT"
 
   depends_on :macos
@@ -10,12 +10,14 @@ class CodexBattery < Formula
   def install
     app = libexec/"CodexBattery.app"
     (app/"Contents/MacOS").mkpath
+    (app/"Contents/Resources").mkpath
 
     system "swiftc", "Sources/main.swift",
            "-framework", "AppKit",
            "-o", app/"Contents/MacOS/CodexBattery"
 
     (app/"Contents").install "Info.plist"
+    (app/"Contents/Resources").install "Resources/CodexBattery.icns"
 
     (bin/"codex-battery").write <<~EOS
       #!/usr/bin/env bash
@@ -97,6 +99,7 @@ class CodexBattery < Formula
 
   test do
     assert_path_exists libexec/"CodexBattery.app/Contents/MacOS/CodexBattery"
+    assert_path_exists libexec/"CodexBattery.app/Contents/Resources/CodexBattery.icns"
     assert_match "Codex Battery", shell_output("/usr/libexec/PlistBuddy -c 'Print :CFBundleName' #{libexec}/CodexBattery.app/Contents/Info.plist")
   end
 end
