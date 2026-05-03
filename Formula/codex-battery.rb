@@ -1,19 +1,19 @@
 class CodexBattery < Formula
   desc "Tiny macOS menu bar battery for Codex quota"
   homepage "https://github.com/EOShoow/codex-battery"
-  url "https://github.com/EOShoow/codex-battery/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "f0eab443ebb432865eb73d24d4805c7e2dfdda9d99780e6179a1f83359a3020e"
+  url "https://github.com/EOShoow/codex-battery/archive/refs/tags/v0.1.1.tar.gz"
+  sha256 "7d6931f39a2d4a2fc06893fcd351544cd3758fda9e9692e1edca48e8ba302a57"
   license "MIT"
 
   depends_on :macos
 
   def install
-    app = libexec/"CodexQuota.app"
+    app = libexec/"CodexBattery.app"
     (app/"Contents/MacOS").mkpath
 
     system "swiftc", "Sources/main.swift",
            "-framework", "AppKit",
-           "-o", app/"Contents/MacOS/CodexQuota"
+           "-o", app/"Contents/MacOS/CodexBattery"
 
     (app/"Contents").install "Info.plist"
 
@@ -27,13 +27,17 @@ class CodexBattery < Formula
       #!/usr/bin/env bash
       set -euo pipefail
 
-      LABEL="local.codex.quota.menu"
+      LABEL="local.codex.battery.menu"
+      OLD_LABEL="local.codex.quota.menu"
       PLIST="$HOME/Library/LaunchAgents/$LABEL.plist"
-      APP="#{app}/Contents/MacOS/CodexQuota"
+      OLD_PLIST="$HOME/Library/LaunchAgents/$OLD_LABEL.plist"
+      APP="#{app}/Contents/MacOS/CodexBattery"
 
       case "${1:-install}" in
         install)
           mkdir -p "$HOME/Library/LaunchAgents"
+          launchctl bootout "gui/$(id -u)/$OLD_LABEL" 2>/dev/null || true
+          rm -f "$OLD_PLIST"
           cat > "$PLIST" <<PLIST
       <?xml version="1.0" encoding="UTF-8"?>
       <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -50,9 +54,9 @@ class CodexBattery < Formula
         <key>KeepAlive</key>
         <false/>
         <key>StandardOutPath</key>
-        <string>/tmp/CodexQuota.out.log</string>
+        <string>/tmp/CodexBattery.out.log</string>
         <key>StandardErrorPath</key>
-        <string>/tmp/CodexQuota.err.log</string>
+        <string>/tmp/CodexBattery.err.log</string>
       </dict>
       </plist>
       PLIST
@@ -63,7 +67,9 @@ class CodexBattery < Formula
           ;;
         uninstall)
           launchctl bootout "gui/$(id -u)/$LABEL" 2>/dev/null || true
+          launchctl bootout "gui/$(id -u)/$OLD_LABEL" 2>/dev/null || true
           rm -f "$PLIST"
+          rm -f "$OLD_PLIST"
           echo "Removed login item: $PLIST"
           ;;
         *)
@@ -90,8 +96,7 @@ class CodexBattery < Formula
   end
 
   test do
-    assert_path_exists libexec/"CodexQuota.app/Contents/MacOS/CodexQuota"
-    assert_match "Codex Battery", shell_output("/usr/libexec/PlistBuddy -c 'Print :CFBundleName' #{libexec}/CodexQuota.app/Contents/Info.plist")
+    assert_path_exists libexec/"CodexBattery.app/Contents/MacOS/CodexBattery"
+    assert_match "Codex Battery", shell_output("/usr/libexec/PlistBuddy -c 'Print :CFBundleName' #{libexec}/CodexBattery.app/Contents/Info.plist")
   end
 end
-
