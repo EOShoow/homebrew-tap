@@ -1,8 +1,8 @@
 class CodexBattery < Formula
   desc "Tiny macOS menu bar battery for Codex quota"
   homepage "https://github.com/EOShoow/codex-battery"
-  url "https://github.com/EOShoow/codex-battery/archive/refs/tags/v0.1.7.tar.gz"
-  sha256 "5abd53a3b108e213105225c76efa30b1750cc2a9e73e76f16abdd89d3273a866"
+  url "https://github.com/EOShoow/codex-battery/archive/refs/tags/v0.1.8.tar.gz"
+  sha256 "c12563800e645e86b9d674233b04c869a1a6de2e915d0ca9fad744d2569ad9fd"
   license "MIT"
 
   depends_on :macos
