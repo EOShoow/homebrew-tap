@@ -1,8 +1,8 @@
 class CodexBattery < Formula
   desc "Tiny macOS menu bar battery for Codex quota"
   homepage "https://github.com/EOShoow/codex-battery"
-  url "https://github.com/EOShoow/codex-battery/archive/refs/tags/v0.1.16.tar.gz"
-  sha256 "60cc81c9969da923e7fc57b3304a71e760842741a063f52f99d3361221cd62b2"
+  url "https://github.com/EOShoow/codex-battery/archive/refs/tags/v0.1.17.tar.gz"
+  sha256 "c2d34353d50a1345f179ec6a1fd7ce7847ebd3bf1d2f7bb0f593f017c9050885"
   license "MIT"
 
   depends_on :macos
@@ -100,6 +100,7 @@ class CodexBattery < Formula
   test do
     assert_path_exists libexec/"CodexBattery.app/Contents/MacOS/CodexBattery"
     assert_path_exists libexec/"CodexBattery.app/Contents/Resources/CodexBattery.icns"
-    assert_match "Codex Battery", shell_output("/usr/libexec/PlistBuddy -c 'Print :CFBundleName' #{libexec}/CodexBattery.app/Contents/Info.plist")
+    plist = libexec/"CodexBattery.app/Contents/Info.plist"
+    assert_match "Codex Battery", shell_output("/usr/libexec/PlistBuddy -c 'Print :CFBundleName' #{plist}")
   end
 end
