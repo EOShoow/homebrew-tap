@@ -1,8 +1,8 @@
 class CodexBattery < Formula
   desc "Tiny macOS menu bar battery for Codex quota"
   homepage "https://github.com/EOShoow/codex-battery"
-  url "https://github.com/EOShoow/codex-battery/archive/refs/tags/v0.1.20.tar.gz"
-  sha256 "7480bc9b70826bdf8e56fe10097ab0a5c17356e248d38e21b1ba6018e5b6b70b"
+  url "https://github.com/EOShoow/codex-battery/archive/refs/tags/v0.1.22.tar.gz"
+  sha256 "1423cfa42950db1000cb8f4c0218e1e3471b967403608edf07af2c42dc1c9135"
   license "MIT"
 
   depends_on :macos
@@ -93,7 +93,7 @@ class CodexBattery < Formula
       Remove login startup:
         codex-battery-login uninstall
 
-      Codex Battery reads local Codex state from ~/.codex. It does not upload data.
+      Codex Battery asks the local Codex app-server for quota and reads ~/.codex for fallback stats. It does not upload your local logs.
     EOS
   end
 
